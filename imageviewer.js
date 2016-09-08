@@ -722,14 +722,28 @@
                 self.refresh();
                 self.resetZoom();
 
-                //hide loader
-                container.find('.iv-loader').hide();
+                //hide loader if there is no higher resolution image.
+                if (!hiResImg) {
+                  container.find('.iv-loader').hide();
+                }
+            }
+
+            function hiResImgLoaded() {
+              container.find('.iv-loader').hide();
             }
 
             if (imageLoaded(currentImg[0])) {
                 refreshView();
             } else {
                 $(currentImg[0]).on('load', refreshView);
+            }
+
+            if (hiResImg) {
+              if (imageLoaded(currentImg[1])) {
+                hiResImgLoaded();
+              } else {
+                  $(currentImg[1]).on('load', hiResImgLoaded);
+              }
             }
 
         }
